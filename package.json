@@ -1,0 +1,23 @@
+{
+  "name": "cashback-mobile",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cashback:run": "tsx scripts/cashback-run.ts",
+    "proxy:phase0": "tsx scripts/proxy-phase0.ts",
+    "webview:url": "tsx scripts/webview-url.ts",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:coverage": "pnpm test:coverage:core && pnpm test:coverage:observer",
+    "test:coverage:core": "node --import tsx --test --experimental-test-coverage --test-coverage-include='scripts/core/*.ts' --test-coverage-include='scripts/runtime/artifacts.ts' --test-coverage-include='scripts/runtime/run-cashback.ts' --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 tests/*.test.ts",
+    "test:coverage:observer": "node --import tsx --test --experimental-test-coverage --test-coverage-include='scripts/runtime/redirect-observer.ts' --test-coverage-lines=60 --test-coverage-functions=65 --test-coverage-branches=58 tests/redirect-observer.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.10.1"
+  }
+}

@@ -1,0 +1,5 @@
+.env
+apk/*.apk
+apk/*.apkm
+artifacts/
+node_modules/
