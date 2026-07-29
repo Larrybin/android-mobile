@@ -15,12 +15,36 @@ import {
 const REMOTE_DUMP_PATH = "/sdcard/cashback-ui.xml";
 
 function stableNodeSignature(nodes: UiNode[]): string {
+  const editTextBounds = nodes
+    .filter((node) => node.className === "android.widget.EditText")
+    .map((node) => node.bounds);
   return JSON.stringify(
-    nodes.map((node) =>
-      node.className === "android.widget.EditText"
-        ? { ...node, text: undefined }
-        : node,
-    ),
+    nodes.map((node) => {
+      if (node.className === "android.widget.EditText") {
+        return { ...node, text: undefined };
+      }
+      const isAnonymousPlaceholderChild =
+        !node.clickable &&
+        node.resourceId === undefined &&
+        node.contentDescription === undefined &&
+        editTextBounds.some(
+          (bounds) =>
+            node.bounds.left >= bounds.left &&
+            node.bounds.top >= bounds.top &&
+            node.bounds.right <= bounds.right &&
+            node.bounds.bottom <= bounds.bottom,
+        );
+      return isAnonymousPlaceholderChild
+        ? {
+            ...node,
+            text: undefined,
+            bounds: {
+              ...node.bounds,
+              right: node.bounds.left,
+            },
+          }
+        : node;
+    }),
   );
 }
 

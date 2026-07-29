@@ -27,9 +27,9 @@ test("AndroidUi waits for two identical dumps before returning nodes", async () 
 
 test("AndroidUi ignores rotating EditText placeholder text", async () => {
   const first =
-    '<hierarchy><node text="Try searching Expedia" class="android.widget.EditText" clickable="true" bounds="[0,0][20,10]" /></hierarchy>';
+    '<hierarchy><node text="" class="android.widget.EditText" clickable="true" bounds="[0,0][100,20]"><node text="" class="androidx.compose.ui.viewinterop.ViewFactoryHolder" bounds="[20,2][60,18]"><node text="Try searching Expedia" class="android.widget.TextView" bounds="[20,2][60,18]" /></node></node></hierarchy>';
   const second =
-    '<hierarchy><node text="Try searching Nike" class="android.widget.EditText" clickable="true" bounds="[0,0][20,10]" /></hierarchy>';
+    '<hierarchy><node text="" class="android.widget.EditText" clickable="true" bounds="[0,0][100,20]"><node text="" class="androidx.compose.ui.viewinterop.ViewFactoryHolder" bounds="[20,2][80,18]"><node text="Try searching Nike" class="android.widget.TextView" bounds="[20,2][80,18]" /></node></node></hierarchy>';
   const outputs = ["", first, "", second];
   const ui = new AndroidUi(
     "emulator-5554",
@@ -43,7 +43,7 @@ test("AndroidUi ignores rotating EditText placeholder text", async () => {
     intervalMs: 0,
   });
 
-  assert.equal(nodes[0]?.text, "Try searching Nike");
+  assert.equal(nodes[2]?.text, "Try searching Nike");
 });
 
 test("AndroidUi derives taps from bounds and rejects unsafe text input", async () => {
